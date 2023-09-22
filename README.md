@@ -48,7 +48,8 @@ To use this project, follow these steps:
 
 Once the tables are created and populated, you can perform various SQL queries and operations on the data to manage the airport system.
 
-ER Diagram:
+## ER diagram
+
 ![ER Diagram V7](https://github.com/AbdoSalah22/Airport-Database/assets/94136052/7d260fa6-5db8-4c7d-88c6-c347147b9dbd)
 
 Relational Schema:
