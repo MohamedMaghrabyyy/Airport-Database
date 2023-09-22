@@ -1,0 +1,184 @@
+CREATE TABLE Airport
+(
+  AirportName VARCHAR(50) NOT NULL,
+  City VARCHAR(25) NOT NULL,
+  PRIMARY KEY (AirportName)
+);
+
+CREATE TABLE Airline
+(
+  AirlineID INT NOT NULL,
+  AirlineName VARCHAR(30) NOT NULL,
+  PRIMARY KEY (AirlineID)
+);
+
+CREATE TABLE Aircraft
+(
+  PlaneID INT NOT NULL,
+  Model VARCHAR(50) NOT NULL,
+  NumberEngines INT NOT NULL,
+  ManufactureDate DATE NOT NULL,
+  NumberOfSeats INT NOT NULL,
+  AirlineID INT NOT NULL,
+  PRIMARY KEY (PlaneID),
+  FOREIGN KEY (AirlineID) REFERENCES Airline(AirlineID)
+);
+
+CREATE TABLE Person
+(
+  Fname VARCHAR(25) NOT NULL,
+  Lname VARCHAR(25) NOT NULL,
+  SSN INT NOT NULL,
+  DOB DATE NOT NULL,
+  Gender CHAR(1) NOT NULL,
+  PRIMARY KEY (SSN)
+);
+
+CREATE TABLE Flight
+(
+  FlightNumber INT NOT NULL,
+  Source VARCHAR(25) NOT NULL,
+  Destination VARCHAR(25) NOT NULL,
+  ArrivalTime VARCHAR(10) NOT NULL,
+  DepartureTime VARCHAR(10) NOT NULL,
+  Status VARCHAR(25) NOT NULL,
+  AirlineID INT NOT NULL,
+  PRIMARY KEY (FlightNumber),
+  FOREIGN KEY (AirlineID) REFERENCES Airline(AirlineID)
+);
+
+CREATE TABLE ControlTower
+(
+  TowerID INT NOT NULL,
+  RadioFrequency VARCHAR(10) NOT NULL,
+  AirportName VARCHAR(50) NOT NULL,
+  PRIMARY KEY (TowerID),
+  FOREIGN KEY (AirportName) REFERENCES Airport(AirportName)
+);
+
+CREATE TABLE Passenger
+(
+  PassportID INT NOT NULL,
+  SSN INT NOT NULL,
+  PRIMARY KEY (SSN),
+  FOREIGN KEY (SSN) REFERENCES Person(SSN),
+  UNIQUE (PassportID)
+);
+
+CREATE TABLE Employee
+(
+  EmployeeID INT NOT NULL,
+  Salary FLOAT NOT NULL,
+  SSN INT NOT NULL,
+  AirportName VARCHAR(50) NOT NULL,
+  PRIMARY KEY (SSN),
+  FOREIGN KEY (SSN) REFERENCES Person(SSN),
+  FOREIGN KEY (AirportName) REFERENCES Airport(AirportName),
+  UNIQUE (EmployeeID)
+);
+
+CREATE TABLE Emergency
+(
+  VehicleID INT NOT NULL,
+  AirportName VARCHAR(50) NOT NULL,
+  PRIMARY KEY (VehicleID),
+  FOREIGN KEY (AirportName) REFERENCES Airport(AirportName)
+);
+
+CREATE TABLE Ambulance
+(
+  PatientCapacity INT NOT NULL,
+  VehicleID INT NOT NULL,
+  PRIMARY KEY (VehicleID),
+  FOREIGN KEY (VehicleID) REFERENCES Emergency(VehicleID)
+);
+
+CREATE TABLE Fire_Engine
+(
+  WaterCapacity INT NOT NULL,
+  VehicleID INT NOT NULL,
+  PRIMARY KEY (VehicleID),
+  FOREIGN KEY (VehicleID) REFERENCES Emergency(VehicleID)
+);
+
+CREATE TABLE Worker
+(
+  ServiceType VARCHAR(25) NOT NULL,
+  SSN INT NOT NULL,
+  PRIMARY KEY (SSN),
+  FOREIGN KEY (SSN) REFERENCES Employee(SSN)
+);
+
+CREATE TABLE Engineer
+(
+  Profession VARCHAR(25) NOT NULL,
+  SSN INT NOT NULL,
+  PRIMARY KEY (SSN),
+  FOREIGN KEY (SSN) REFERENCES Employee(SSN)
+);
+
+CREATE TABLE Pilot
+(
+  YearsOfExp INT NOT NULL,
+  SSN INT NOT NULL,
+  PRIMARY KEY (SSN),
+  FOREIGN KEY (SSN) REFERENCES Employee(SSN)
+);
+
+CREATE TABLE Calls
+(
+  PlaneID INT NOT NULL,
+  TowerID INT NOT NULL,
+  PRIMARY KEY (PlaneID, TowerID),
+  FOREIGN KEY (PlaneID) REFERENCES Aircraft(PlaneID),
+  FOREIGN KEY (TowerID) REFERENCES ControlTower(TowerID)
+);
+
+CREATE TABLE Flies
+(
+  SSN INT NOT NULL,
+  PlaneID INT NOT NULL,
+  PRIMARY KEY (SSN, PlaneID),
+  FOREIGN KEY (SSN) REFERENCES Pilot(SSN),
+  FOREIGN KEY (PlaneID) REFERENCES Aircraft(PlaneID)
+);
+
+CREATE TABLE Inspect
+(
+  Date DATE NOT NULL,
+  PlaneID INT NOT NULL,
+  SSN INT NOT NULL,
+  PRIMARY KEY (PlaneID, SSN),
+  FOREIGN KEY (PlaneID) REFERENCES Aircraft(PlaneID),
+  FOREIGN KEY (SSN) REFERENCES Engineer(SSN)
+);
+
+CREATE TABLE Person_Phone
+(
+  Phone VARCHAR(25) NOT NULL,
+  SSN INT NOT NULL,
+  PRIMARY KEY (Phone, SSN),
+  FOREIGN KEY (SSN) REFERENCES Person(SSN)
+);
+
+CREATE TABLE Luggage
+(
+  Weight INT NOT NULL,
+  SSN INT NOT NULL,
+  PRIMARY KEY (SSN),
+  FOREIGN KEY (SSN) REFERENCES Passenger(SSN)
+);
+
+CREATE TABLE Ticket
+(
+  TicketID INT NOT NULL,
+  Price FLOAT NOT NULL,
+  SeatNumber INT NOT NULL,
+  Class VARCHAR(25) NOT NULL,
+  SSN INT NOT NULL,
+  FlightNumber INT NOT NULL,
+  PRIMARY KEY (TicketID),
+  FOREIGN KEY (SSN) REFERENCES Passenger(SSN),
+  FOREIGN KEY (FlightNumber) REFERENCES Flight(FlightNumber)
+);
+
